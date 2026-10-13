@@ -41,9 +41,9 @@ also handles video thumbnails and associated metadata.
 
 ### Running locally
 
-\`\`\`bash
+```bash
 go run main.go
-\`\`\`
+```
 
 ## API Overview
 
