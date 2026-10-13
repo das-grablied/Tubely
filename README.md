@@ -1,65 +1,64 @@
-# learn-file-storage-s3-golang-starter (Tubely)
+# Tubely
 
-This repo contains the starter code for the Tubely application - the #1 tool for engagement bait - for the "Learn File Servers and CDNs with S3 and CloudFront" [course](https://www.boot.dev/courses/learn-file-servers-s3-cloudfront-golang) on [boot.dev](https://www.boot.dev)
+A backend file server written in Go that stores and serves video files using
+AWS S3, with AWS CloudFront as a CDN layer for fast, cached delivery. Tubely
+also handles video thumbnails and associated metadata.
 
-## Quickstart
+## Features
 
-*This is to be used as a *reference\* in case you need it, you should follow the instructions in the course rather than trying to do everything here.
+- Upload and retrieve video files via a REST API
+- Generate and serve video thumbnails
+- Store and manage video metadata (title, description, etc.)
+- Persistent storage backed by AWS S3
+- Global content delivery via AWS CloudFront
+- Signed URLs / distribution config for secure, performant access
 
-## 1. Install dependencies
+## Tech Stack
 
-- [Go](https://golang.org/doc/install)
-- `go mod download` to download all dependencies
-- [FFMPEG](https://ffmpeg.org/download.html) - both `ffmpeg` and `ffprobe` are required to be in your `PATH`.
+- Go
+- AWS S3
+- AWS CloudFront
+- AWS IAM (least-privilege access policies)
 
-```bash
-# linux
-sudo apt update
-sudo apt install ffmpeg
+## Setup
 
-# mac
-brew update
-brew install ffmpeg
-```
+### Prerequisites
 
-- [SQLite 3](https://www.sqlite.org/download.html) only required for you to manually inspect the database.
+- An AWS account
+- An S3 bucket
+- A CloudFront distribution pointed at that bucket
+- IAM user/role with permissions scoped to S3 access
 
-```bash
-# linux
-sudo apt update
-sudo apt install sqlite3
+### Environment Variables
 
-# mac
-brew update
-brew install sqlite3
-```
+| Variable             | Description                          |
+|----------------------|---------------------------------------|
+| `S3_BUCKET`          | Name of your S3 bucket               |
+| `S3_REGION`          | AWS region of the bucket             |
+| `CLOUDFRONT_DOMAIN`  | Your CloudFront distribution domain  |
+| `AWS_ACCESS_KEY_ID`  | IAM access key (not committed)       |
+| `AWS_SECRET_ACCESS_KEY` | IAM secret key (not committed)    |
 
-- [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+### Running locally
 
-## 2. Download sample images and videos
+\`\`\`bash
+go run main.go
+\`\`\`
 
-```bash
-./samplesdownload.sh
-# samples/ dir will be created
-# with sample images and videos
-```
+## API Overview
 
-## 3. Configure environment variables
+- `POST /videos` - upload a new video and its metadata
+- `POST /videos/{id}/thumbnail` - upload a thumbnail for a video
+- `GET /videos/{id}` - retrieve video metadata and playback URL
 
-Copy the `.env.example` file to `.env` and fill in the values.
+## About the name
 
-```bash
-cp .env.example .env
-```
+Tubely is a lighthearted nod to video-sharing platforms, reflecting its
+purpose: storing and streaming video content efficiently.
 
-You'll need to update values in the `.env` file to match your configuration, but _you won't need to do anything here until the course tells you to_.
+## Notes
 
-## 3. Run the server
-
-```bash
-go run .
-```
-
-- You should see a new database file `tubely.db` created in the root directory.
-- You should see a new `assets` directory created in the root directory, this is where the images will be stored.
-- You should see a link in your console to open the local web page.
+Tubely was built as part of the Boot.dev "Learn File Servers and CDNs with
+S3 and CloudFront" course. AWS resources used during development (S3
+buckets, CloudFront distribution, IAM roles/users) have since been deleted
+to avoid ongoing charges, so the live demo is no longer active.
